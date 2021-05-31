@@ -19,10 +19,10 @@ void show(struct Burger B[]) {
 	}
 }
 
-void fillStore(struct Burger B[], char* C[]) {
+void fillStore(struct Burger B[], char* C[], int stop) {
 	int azar = 2;
 
-	for (int i = 0; i < 5; i++) {
+	for (int i = 0; i < stop; i++) {
 		(B + i)->number = azar * 5;
 		(B + i)->price = azar * 13.25;
 		strcpy((B+i)->name, *(C + i));
@@ -33,15 +33,18 @@ void fillStore(struct Burger B[], char* C[]) {
 int main() {
 
 	// Create the burgers for my store and structs for store and shopping cart.
-	char* colors[5] = { "Black", "Green", "Yellow", "Blue ", "Orange" };
-	struct Burger newBurgers[5];
-	struct Burger shoppingCart[5];
+	char* colors[] = { "Black", "Green", "Yellow", "Blue ", "Orange", "Armando" };
+	// Define the number of burgers I have
+	int numberColors = (int)(sizeof(colors) / sizeof(colors[0]));
+	printf("%i", numberColors);
+	struct Burger newBurgers[numberColors];
+	// struct Burger shoppingCart[5];
 
 	// Fill store with burgers.
-	fillStore(newBurgers,colors);
-
+	fillStore(newBurgers,colors, numberColors);
 
 	show(newBurgers);
+
 
 
 	return 0;
