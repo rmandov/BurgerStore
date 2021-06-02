@@ -18,5 +18,13 @@
     <ClCompile Include="main.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="nameColors.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="prices.csv">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>
