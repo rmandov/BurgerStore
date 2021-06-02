@@ -9,11 +9,17 @@
 
 // Struct for burgers
 struct burger {
-	const char *name;
+	//const char *name;
+	char name[20];
+	double price;
 	int number;
-	float price;
 };
 typedef struct burger Burger;
+
+struct name {
+	char name[20];
+};
+typedef struct name Name;
 
 // show kind of burgers
 void show(const Burger * const B) {
@@ -27,11 +33,12 @@ void show(const Burger * const B) {
 }
 
 // Fill the struct
-void fillStore(Burger * const B,const char * C[]) {
+void fillStore(Burger * const B, Name * const C) {
 	int azar = 2;
 
 	for (size_t i = 0; i < SIZE; i++) {
-		B[i].name = C[i];
+		strcpy_s(B[i].name,20,C[i].name);
+		//B[i].name = C[i].name;
 		B[i].number = azar * 5;
 		B[i].price = 13.5 + i;
 		azar++;
@@ -55,85 +62,101 @@ void closeFile(FILE* file) {
 	}
 }
 
-
 int main() {
 
 	
-	
+	// ---------------------------
 	// Trying to get all the names from CSV file 
 	FILE* burgersData;
 	errno_t err;
-	
-	
+	Name names[5];
+	int i = 0;
 
 	err = fopen_s(&burgersData, "prices.csv", "r");
 	if(err == 0){
-		
-		char names[SIZE][20];
 		char buffer[1024];
 
-		int column = 0; // 1 'cause the name is in the column 1
-		int row = 0; //  avoid to print the name of the columns	
-		int i = 0;
-		char* token = NULL;
-		char* next_token = NULL;
+		int row = 0;
+		int column = 0;
 
-		while(fgets(buffer, 1024, burgersData)){
-			
+		while (fgets(buffer,1024, burgersData)) {
 			column = 0;
 			row++;
-			
-
-			// to avoid the name of the column
+			char* value = NULL;
+			char* next_value = NULL;
+			// To avoid printing of column
+			// names in file can be changed
+			// according to need
 			if (row == 1)
 				continue;
 
-			// Establish string and get the first token:
-			token = strtok_s(buffer, ", ", &next_token);
-			printf("%s\n", token);
+			// Splitting the data
+			value = strtok_s(buffer, ",", &next_value);
 
-				while (token) {
+			while (value) {
+				// Column 1
+				if (column == 0) {
 					
-					if (column == 1) {
-						strcpy_s(names[i], _countof(names), token);
-						printf("%s\n", names[i]);
-						i++;
-						printf("%i", i);
-					}
-					token = strtok_s(NULL, ", ", &next_token);
-					printf("%s\n", token);
-					column++;
 				}
-				
-				
+
+				// Column 2
+				if (column == 1) {
+					printf("NAME: ");
+					printf("%s", value);
+					strcpy_s(names[i].name,20,value);
+					i++;
+				}
+
+				// Column 3
+				if (column == 2) {
+				}
+
+				// Column 4
+				if (column == 3) {	
+				}
+
+				value = strtok_s(NULL, ",", &next_value);
+				column++;
+			}
+
+			printf("\n");
 		}
-			
 	}
 	else {
 		printf("The file was not opened\n");
 	}
 	// Close file
 	closeFile(burgersData);
+	// ---------------------------
+	
+	printf("%s\n", names[2].name);
 
 
 
-
-
-
+	
 
 	// Create the burgers for my store and structs for store and shopping cart.
-	const char* name[] = { "Black", "Green", "Yellow", "Blue ", "Orange" };
+	//const char* name[] = { "Black", "Green", "Yellow", "Blue ", "Orange" };
 
 	Burger newBurgers[SIZE];
 
 	// Fill store with burgers.
-	fillStore(newBurgers,name);
+	fillStore(newBurgers,names);
 
 
 
 	show(newBurgers);
 
-
+	
 
 	return 0;
 }
+
+/*
+code	name	price	amount
+1	blue	12.3	9
+2	green	15	8
+3	yellow	13.5	7
+4	red	14.99	1
+5	purple	15	3
+*/
